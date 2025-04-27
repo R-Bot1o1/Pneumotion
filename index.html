@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PneuMotion - Smart Tire Pressure System</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --nav-bg: rgba(26, 26, 26, 0.9);
+            --nav-scroll-bg: rgba(26, 26, 26, 0.95);
+            --feature-bg: #2d2d2d;
+            --gradient-start: #2d2d2d;
+            --gradient-end: #1a1a1a;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 100px 10%;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero {
+            position: relative;  /* Add this */
+            background: none;    /* Remove gradient background */
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            margin-bottom: 4rem;   /* Increased from 3rem */
+            line-height: 1.1;
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;   /* Added bottom margin */
+            opacity: 0.9;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: float 2s infinite;
+        }
+
+        .feature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .feature-image {
+            width: 100%;
+            height: 500px;
+            background: var(--feature-bg);
+            border-radius: 20px;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+
+        .feature-text {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 1s ease;
+        }
+
+        .visible .feature-image {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .visible .feature-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .parallax-bg {
+            position: absolute;
+            width: 100%;
+            height: 120%;
+            top: -10%;
+            left: 0;
+            background-size: cover;
+            background-position: center;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -20px); }
+            100%
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 5%;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            margin: 0 20px;
+            text-decoration: none;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        .nav-item:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--text-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover:after {
+            width: 100%;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .buy-now {
+            background: var(--gradient-start);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .pricing-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 5rem;   /* Increased from 4rem */
+            color: var(--text-color);
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .pricing-card {
+            background: var(--bg-color);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .pricing-card.featured {
+            border: 2px solid #83d8ff;
+        }
+
+        .featured-tag {
+            position: absolute;
+            top: 1rem;
+            right: -2rem;
+            background: #83d8ff;
+            color: #fff;
+            padding: 0.5rem 3rem;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .card-header {
+            margin-bottom: 2rem;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .currency {
+            font-size: 1.5rem;
+            vertical-align: super;
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 2rem 0;
+            padding: 0;
+        }
+
+        .features-list li {
+            margin: 1rem 0;
+            color: var(--text-color);
+        }
+
+        .buy-button {
+            background: #83d8ff;
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+            width: 100%;
+        }
+
+        .buy-button:hover {
+            transform: scale(1.05);
+            background: #6ac7ff;
+        }
+
+        .buy-button.featured {
+            background: #2196f3;
+        }
+
+        .buy-button.featured:hover {
+            background: #1976d2;
+        }
+
+        .feature-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 1;         /* Ensure video is visible */
+        }
+
+        .hero-content {
+            position: relative;  /* Add this */
+            z-index: 1;         /* Add this */
+        }
+
+        .feature-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2.5rem;  /* Increased from default */
+            color: var(--text-color);
+            font-weight: 700;
+        }
+
+        .feature-text p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            padding-top: 1rem;     /* Added top padding */
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">PneuMotion</div>
+        <div class="nav-items">
+            <a href="#technology" class="nav-item">Technology</a>
+            <a href="#features" class="nav-item">Features</a>
+            <a href="#contact" class="nav-item">Contact</a>
+            <a href="#buy-now" class="nav-item">Buy Now</a>
+        </div>
+    </nav>
+
+    <section class="section hero">
+        <video class="background-video" autoplay muted loop playsinline>
+            <source src="src/images/vd.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-content">
+            <h1 data-aos="fade-up" data-aos-duration="1000">Adaptive Tire<br>Pressure Control</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Smart. Instant. Effortless.</p>
+        </div>
+        <div class="scroll-down">↓ Scroll to explore</div>
+    </section>
+
+    <section class="section">
+        <div class="feature-section">
+            <div class="feature-image" data-aos="zoom-out">
+                <img src="src/images/pneumotion2.png" alt="Real-time Pressure Adjustment">
+            </div>
+            <div class="feature-text" data-aos="fade-left">
+                <h2>Real-time Pressure Adjustment</h2>
+                <p>Advanced sensors continuously monitor riding conditions to automatically optimize tire pressure.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="feature-section">
+            <div class="feature-text" data-aos="fade-right">
+                <h2>Preset Tire Pressure Control</h2>
+                <p>Our device allows you to quickly switch between preset tire pressure values, ensuring optimal performance tailored to your riding conditions.</p>
+            </div>
+            <div class="feature-image" data-aos="zoom-out">
+                <img src="src/images/woman.png" alt="Preset Tire Pressure Control Device">
+            </div>
+        </div>
+    </section>
+
+    <section class="section buy-now" id="buy-now">
+        <div class="pricing-container">
+            <h2 class="section-title" data-aos="fade-up">Choose Your Package</h2>
+            <div class="pricing-cards">
+                <div class="pricing-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-header">
+                        <h3>Standard</h3>
+                        <div class="price">
+                            <span class="currency">£</span>
+                            <span class="amount">159</span>
+                        </div>
+                    </div>
+                    <!-- Standard Pricing Card -->
+                    <ul class="features-list">
+                        <li>Single PneuMotion Device</li>
+                        <li>Preset Pressure Settings</li>
+                        <li>1-Year Warranty</li>
+                        <li>Email Support</li>
+                    </ul>
+                    <button class="buy-button">Buy Now</button>
+                </div>
+
+                <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="200">
+                    <span class="featured-tag">Most Popular</span>
+                    <div class="card-header">
+                        <h3>Premium</h3>
+                        <div class="price">
+                            <span class="currency">£</span>
+                            <span class="amount">239</span>
+                        </div>
+                    </div>
+                    <!-- Premium Pricing Card -->
+                    <ul class="features-list">
+                        <li>Dual PneuMotion Devices</li>
+                        <li>Advanced Preset Options</li>
+                        <li>2-Year Warranty</li>
+                        <li>24/7 Priority Support</li>
+                        <li>Real-time Analytics</li>
+                    </ul>
+                    <button class="buy-button featured">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: false,
+            mirror: true
+        });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Parallax effect
+        gsap.to(".parallax-bg", {
+            yPercent: -20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".hero",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // Section animations
+        document.querySelectorAll('.section').forEach((section, index) => {
+            if(index > 0) {
+                gsap.from(section, {
+                    opacity: 0,
+                    y: 100,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            }
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if(window.scrollY > 50) {
+                nav.style.background = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--nav-scroll-bg')
+                    .trim();
+                nav.style.boxShadow = '0 5px 30px rgba(0, 0, 0, 0.1)';
+            } else {
+                nav.style.background = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--nav-bg')
+                    .trim();
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        document.querySelector('.background-video').addEventListener('loadeddata', function() {
+            console.log('Video loaded successfully');
+        });
+
+        document.querySelector('.background-video').addEventListener('error', function(e) {
+            console.error('Error loading video:', e);
+        });
+    </script>
+</body>
+</html>
