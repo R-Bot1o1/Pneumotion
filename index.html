@@ -674,10 +674,17 @@
     </nav>
 
     <section class="section hero">
-        <video class="background-video" autoplay muted loop playsinline>
-            <source src="src/images/vd.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <video 
+    class="background-video" 
+    autoplay 
+    muted 
+    loop 
+    playsinline
+    preload="auto"
+    poster="src/images/fallback.jpg">  <!-- Add a poster image for loading state -->
+    <source src="src/images/vd.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
         <div class="hero-content">
             <h1 data-aos="fade-up" data-aos-duration="1000">Adaptive Tire<br>Pressure Control</h1>
             <p data-aos="fade-up" data-aos-delay="200">Smart. Instant. Effortless.</p>
@@ -907,6 +914,29 @@
                 navItems.classList.remove('active');
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const video = document.querySelector('.background-video');
+    
+    // Try to play video immediately
+    const playPromise = video.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Video playback started successfully
+            console.log('Video started playing');
+        })
+        .catch(error => {
+            // Auto-play was prevented
+            console.log('Video autoplay prevented:', error);
+            
+            // Add click-to-play functionality for mobile
+            document.querySelector('.hero').addEventListener('click', () => {
+                video.play();
+            });
+        });
+    }
+});
     </script>
 
 <script>
