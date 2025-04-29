@@ -383,22 +383,10 @@
         }
 
         .slider-dots {
-           
+            display: flex;          /* Add this */
+            justify-content: center; /* Add this */
+            align-items: center;    /* Add this */
             gap: 10px;
-        }
-
-        .slider-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #444;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .slider-dot.active {
-            background: #83d8ff;
-            transform: scale(1.2);
         }
 
         @media (max-width: 768px) {
@@ -512,53 +500,50 @@
 
             /* Team Section Mobile Fixes */
             .team-section {
-                padding: 60px 20px;  /* Reduced padding */
+                padding: 40px 20px;
+            }
+
+            .section-title {
+                margin-bottom: 30px;
             }
 
             .slide {
-                min-width: 100%;
-                padding: 10px;  /* Reduced padding */
+                min-width: unset;
+                transform: none !important;
+                opacity: 1 !important;
             }
 
+            /* Remove slider functionality on mobile */
+            .slider-container {
+                overflow: visible;
+            }
+
+            .slider-track {
+                display: flex;
+                flex-direction: column;
+                transform: none !important;  /* Prevent sliding animation */
+                gap: 30px;
+            }
+
+            /* Hide slider navigation on mobile */
+            .slider-nav {
+                display: none;
+            }
+
+            /* Stack team cards vertically */
             .member-card {
                 width: 100%;
-                max-width: 300px;  /* Adjusted max-width for mobile */
-                padding: 15px;
+                max-width: 280px;
                 margin: 0 auto;
             }
 
-            .member-image {
-                width: 120px;      /* Smaller image size for mobile */
-                height: 120px;
-                margin: 0 auto 15px;
+            /* Adjust spacing */
+            .team-section {
+                padding: 40px 20px;
             }
 
-            .member-card h3 {
-                font-size: 1.2rem;  /* Adjusted font size */
-                margin-bottom: 0.5rem;
-            }
-
-            .member-card p {
-                font-size: 1rem;
-            }
-
-            .slider-nav {
-                margin-top: 20px;  /* Reduced margin */
-                gap: 15px;        /* Reduced gap */
-            }
-
-            .slider-nav button {
-                padding: 8px 15px;  /* Smaller buttons */
-                font-size: 0.9rem;
-            }
-
-            .slider-dots {
-                gap: 8px;          /* Reduced gap between dots */
-            }
-
-            .slider-dot {
-                width: 8px;        /* Smaller dots */
-                height: 8px;
+            .section-title {
+                margin-bottom: 30px;
             }
         }
 
